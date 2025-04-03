@@ -44,12 +44,12 @@ class Personagem extends Entidade{
     }
     verificarColisão(){
         if(
-            obstaculo.x < this.x + this.largura &&
-            obstaculo.largura + obstaculo.x > this.x &&
-            this.y < obstaculo.y + obstaculo.altura &&
-            this.y + this.altura > obstaculo.y
+            jogo.obstaculo.x < this.x + this.largura &&
+            jogo.obstaculo.largura + jogo.obstaculo.x > this.x &&
+            this.y < jogo.obstaculo.y + jogo.obstaculo.altura &&
+            this.y + this.altura > jogo.obstaculo.y
         ){
-            obstaculo.velocidade_x = 0
+            jogo.obstaculo.velocidade_x = 0
             this.#velocidade_y = 0
             ctx.fillStyle = 'white'
             ctx.font = '50 px Arial'
@@ -90,21 +90,20 @@ class Jogo {
     static gameOver = false
     constructor() {
         this.loop = this.loop.bind(this)
+        this.personagem = new Personagem(100, canvas.height-50, 50, 50, 'gray')
+        this.obstaculo = new Obstaculo(canvas.width - 50, canvas.height - 100, 50, 100, 'pink' )
     }
     loop() {
         ctx.clearRect(0,0, canvas.width, canvas.height)
-        obstaculo.desenhar()
-        personagem.desenhar()
-        personagem.atualizar()
-        obstaculo.atualizar()
+        jogo.obstaculo.desenhar()
+        jogo.personagem.desenhar()
+        jogo.personagem.atualizar()
+        jogo.obstaculo.atualizar()
         personagem.verificarColisão()
         requestAnimationFrame(this.loop)
     }
 }
 
 const entidade = new Entidade(100,100,50,50,'red')
-const personagem = new Personagem(100, canvas.height-50, 50, 50, 'gray')
-const obstaculo = new Obstaculo(canvas.width - 50, canvas.height - 100, 50, 100, 'pink' )
-
 const jogo = new Jogo()
 jogo.loop()
